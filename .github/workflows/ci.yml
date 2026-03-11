@@ -77,13 +77,17 @@ jobs:
 
       - name: Start Servers and Run E2E
         run: |
-          # Start Backend
-          cd backend && npm run start &
-          # Start React
-          cd ../react-frontend && npm run dev &
-          # Start Vue
-          cd ../vue-frontend && npm run dev &
+          # Start Backend in background
+          npm run start --prefix backend &
+          
+          # Start React in background
+          npm run dev --prefix react-frontend &
+          
+          # Start Vue in background
+          npm run dev --prefix vue-frontend &
+          
           # Wait for servers to be ready
-          cd ../e2e && npx wait-on http://localhost:4000 http://localhost:5173 http://localhost:5174 -t 60000
-          # Run E2E
-          npm test
+          npx wait-on http://localhost:4000 http://localhost:5173 http://localhost:5174 -t 60000
+          
+          # Run E2E tests
+          npm test --prefix e2e
