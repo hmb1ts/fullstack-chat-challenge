@@ -1,0 +1,21 @@
+{
+  "name": "test-front-end",
+  "version": "1.0.0",
+  "description": "Este proyecto es una demostración técnica de un ecosistema de chat en tiempo real que utiliza un único backend para sincronizar dos aplicaciones frontend construidas con tecnologías distintas (**React** y **Vue 3**).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmb1ts/fullstack-chat-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hmb1ts/fullstack-chat-challenge/issues"
+  },
+  "homepage": "https://github.com/hmb1ts/fullstack-chat-challenge#readme"
+}

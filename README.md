@@ -60,6 +60,27 @@ La forma más rápida de levantar toda la infraestructura es utilizando Docker C
 ├── backend/              # Lógica del servidor y WebSockets
 ├── react-frontend/       # Aplicación construida con React
 ├── vue-frontend/         # Aplicación construida con Vue 3
+├── e2e/                  # Pruebas funcionales y E2E (Playwright)
 └── docker-compose.yml    # Configuración de orquestación
 ```
+
+## 🧪 Testing
+
+El proyecto cuenta con una suite completa de pruebas:
+
+### Pruebas Unitarias y de Integración (Backend/Frontend)
+- **Backend**: `cd backend && npm test` (Jest)
+- **React**: `cd react-frontend && npm test` (Vitest)
+- **Vue**: `cd vue-frontend && npm test` (Vitest)
+
+### Pruebas E2E (Cross-App Interaction)
+Estas pruebas verifican que los mensajes fluyan correctamente entre React y Vue.
+**Requisito**: Los servidores deben estar corriendo localmente o vía Docker con los puertos mapeados.
+```bash
+cd e2e
+npm test
+```
+
+---
+Desarrollado como prueba técnica de alto rendimiento.
 
