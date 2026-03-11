@@ -1,0 +1,15 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Set environment variable for the socket URL
+ENV VITE_SOCKET_URL=http://localhost:4000
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev", "--", "--host"]
