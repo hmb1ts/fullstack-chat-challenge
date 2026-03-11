@@ -81,10 +81,10 @@ jobs:
           npm run start --prefix backend &
           
           # Start React in background
-          npm run dev --prefix react-frontend &
+          npm run dev --prefix react-frontend -- --port 5173 --strictPort &
           
           # Start Vue in background
-          npm run dev --prefix vue-frontend &
+          npm run dev --prefix vue-frontend -- --port 5174 --strictPort &
           
           # Wait for servers to be ready
           npx wait-on http://localhost:4000 http://localhost:5173 http://localhost:5174 -t 60000
