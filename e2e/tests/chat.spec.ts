@@ -10,7 +10,6 @@ test.describe('Chat Cross-App E2E', () => {
     const vuePage = await vueContext.newPage();
 
     // 2. Open both apps
-    // We assume servers are running on 5173 and 5174
     await reactPage.goto('http://localhost:5173');
     await vuePage.goto('http://localhost:5174');
 
@@ -30,7 +29,9 @@ test.describe('Chat Cross-App E2E', () => {
     await reactPage.keyboard.press('Enter');
 
     // 6. Vue receives the message
-    await expect(vuePage.locator('text=ReactUser: Hello from React!')).toBeVisible();
+    // Note: User and text are in different divs, so we check for presence
+    await expect(vuePage.locator('.message-item.message-other')).toContainText('ReactUser');
+    await expect(vuePage.locator('.message-item.message-other')).toContainText('Hello from React!');
 
     // 7. Vue sends a message back
     const vueInput = vuePage.locator('input[placeholder*="Type a message"]');
@@ -38,16 +39,19 @@ test.describe('Chat Cross-App E2E', () => {
     await vuePage.keyboard.press('Enter');
 
     // 8. React receives the message
-    await expect(reactPage.locator('text=VueUser: Hello from Vue!')).toBeVisible();
+    await expect(reactPage.locator('.message-item.message-other')).toContainText('VueUser');
+    await expect(reactPage.locator('.message-item.message-other')).toContainText('Hello from Vue!');
 
     // 9. Test Typing Indicator (React starts typing)
     await reactInput.fill('Typing...');
     // Should show in Vue
     await expect(vuePage.locator('.typing-indicator')).toBeVisible();
-    await expect(vuePage.locator('text=ReactUser is typing')).toBeVisible();
+    await expect(vuePage.locator('.typing-indicator')).toContainText('ReactUser');
 
     // 10. Stop typing
     await reactPage.keyboard.press('Enter'); // Sends message and stops typing
+    
+    // Wait a bit for the typing indicator to disappear (it has a timeout or removed on message)
     await expect(vuePage.locator('.typing-indicator')).not.toBeVisible();
 
     await reactContext.close();
