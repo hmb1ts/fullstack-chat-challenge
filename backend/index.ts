@@ -3,11 +3,11 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 
-const app = express();
+export const app = express();
 app.use(cors());
 
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
+export const httpServer = createServer(app);
+export const io = new Server(httpServer, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
@@ -23,17 +23,12 @@ interface Message {
 
 const PORT = process.env.PORT || 4000;
 
-// Simple history to share with new clients (optional but good practice)
 let messageHistory: Message[] = [];
 
 io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
-
-  // Send history to the new user
   socket.emit('history', messageHistory);
 
   socket.on('join', (username: string) => {
-    console.log(`${username} joined the chat`);
     socket.data.username = username;
     io.emit('notification', `${username} joined the chat`);
   });
@@ -48,7 +43,6 @@ io.on('connection', (socket) => {
     
     messageHistory.push(newMessage);
     if (messageHistory.length > 50) messageHistory.shift();
-
     io.emit('message', newMessage);
   });
 
@@ -61,7 +55,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
     if (socket.data.username) {
       io.emit('notification', `${socket.data.username} left the chat`);
     }
@@ -72,6 +65,9 @@ app.get('/', (req, res) => {
   res.send('Chat server is running');
 });
 
-httpServer.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+// Solo iniciamos el servidor si este archivo se ejecuta directamente
+if (require.main === module || (process.env.NODE_ENV !== 'test')) {
+  httpServer.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
